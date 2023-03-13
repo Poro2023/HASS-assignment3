@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <title></title>
+	<link rel="stylesheet" href="css/common.css">
+</head>
+<body>
+<div id="app">
+	<h1>Trends in Resale Price over the last 12 months for Tampines</h1>
+	<p>What are the price trends of the different flat types of release prices?</p>
+	<div style="width: 85%;text-align: end;">
+		<select  id="select_id">
+			<option value="0">1ROOM</option>
+			<option value="1">2ROOM</option>
+			<option value="2">3ROOM</option>
+			<option value="3">4ROOM</option>
+			<option value="4">5ROOM</option>
+		</select>
+	</div>
+	<span style=" display: inline-block; width: 70%; text-align: left;margin-top: -10px;">Price(Unit: SGD)</span>
+	<div id="test-svg">
+	</div>
+</div>
+</body>
+<style>
+#app{
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+}
+#app h1{
+    font-family: Montserrat,sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+	display: block;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+#app p{
+    font-family: Montserrat,sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    margin-top: 0;
+	display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+	color:#5c5c5c
+}
+</style>
+<script src="https://d3js.org/d3.v5.js"></script>
+<script>
+	window.onload = function() {
+	var data = [
+		{
+			month:'2023-02',
+			town:'YISHUN',
+			flat_type:'2ROOM',
+			resale_price:'440000'
+		},
+		{
+			month:'2023-01',
+			town:'YISHUN',
+			flat_type:'2ROOM',
+			resale_price:'440000'
+		},
+		{
+			month:'2022-12',
+			town:'YISHUN',
+			flat_type:'2ROOM',
+			resale_price:'440000'
+		},
+		{
+			month:'2022-11',
+			town:'YISHUN',
+			flat_type:'2ROOM',
+			resale_price:'440000'
+		},
+		{
+			month:'2023-02',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'525000'
+		},
+		{
+			month:'2023-01',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'655000'
+		},
+		{
+			month:'2022-12',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'546000'
+		},
+		{
+			month:'2022-11',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'535000'
+		},
+		{
+			month:'2022-10',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'625000'
+		},{
+			month:'2022-09',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'748000'
+		},{
+			month:'2022-08',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'640000'
+		},{
+			month:'2022-07',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'638000'
+		},{
+			month:'2022-06',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'628000'
+		},{
+			month:'2022-05',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'620000'
+		},{
+			month:'2022-04',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'452000'
+		},{
+			month:'2022-03',
+			town:'TAMPINES',
+			flat_type:'1ROOM',
+			resale_price:'585000'
+		},
+		{
+			month:'2023-02',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'262000'
+		},
+		{
+			month:'2023-01',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'285000'
+		},
+		{
+			month:'2022-12',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'288000'
+		},
+		{
+			month:'2022-11',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'325000'
+		},
+		{
+			month:'2022-10',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'450000'
+		},{
+			month:'2022-09',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'265000'
+		},{
+			month:'2022-08',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'268000'
+		},{
+			month:'2022-07',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'257000'
+		},{
+			month:'2022-06',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'250000'
+		},{
+			month:'2022-05',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'248000'
+		},{
+			month:'2022-04',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'256000'
+		},{
+			month:'2022-03',
+			town:'TAMPINES',
+			flat_type:'2ROOM',
+			resale_price:'280000'
+		},
+		{
+			month:'2023-02',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'440000'
+		},
+		{
+			month:'2023-01',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'465000'
+		},
+		{
+			month:'2022-12',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'475000'
+		},
+		{
+			month:'2022-11',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},
+		{
+			month:'2022-10',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},{
+			month:'2022-09',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},{
+			month:'2022-08',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},{
+			month:'2022-07',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},{
+			month:'2022-06',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},{
+			month:'2022-05',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},{
+			month:'2022-04',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},{
+			month:'2022-03',
+			town:'TAMPINES',
+			flat_type:'3ROOM',
+			resale_price:'748888'
+		},
+		{
+			month:'2023-02',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'660000'
+		},
+		{
+			month:'2023-01',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'615000'
+		},
+		{
+			month:'2022-12',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'642800'
+		},
+		{
+			month:'2022-11',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'620000'
+		},
+		{
+			month:'2022-10',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'628000'
+		},{
+			month:'2022-09',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'638000'
+		},{
+			month:'2022-08',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'640000'
+		},{
+			month:'2022-07',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'535000'
+		},{
+			month:'2022-06',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'546000'
+		},{
+			month:'2022-05',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'525000'
+		},{
+			month:'2022-04',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'575000'
+		},{
+			month:'2022-03',
+			town:'TAMPINES',
+			flat_type:'4ROOM',
+			resale_price:'530000'
+		},
+		{
+			month:'2023-02',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'748888'
+		},
+		{
+			month:'2023-01',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'775000'
+		},
+		{
+			month:'2022-12',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'748000'
+		},
+		{
+			month:'2022-11',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'625000'
+		},
+		{
+			month:'2022-10',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'668000'
+		},{
+			month:'2022-09',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'650000'
+		},{
+			month:'2022-08',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'655000'
+		},{
+			month:'2022-07',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'647000'
+		},{
+			month:'2022-06',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'658088'
+		},{
+			month:'2022-05',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'645000'
+		},{
+			month:'2022-04',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'670000'
+		},{
+			month:'2022-03',
+			town:'TAMPINES',
+			flat_type:'5ROOM',
+			resale_price:'650000'
+		}
+	]
+
+	// d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", function(data) {
+		if(data.length){
+			var townData = data.filter(res => res.town == 'TAMPINES')
+			var chartData = []
+			var xData = []
+			for (let i = 0; i < townData.length; i++) {
+				let index = chartData.findIndex((item) =>{ return item.name == townData[i].flat_type})
+				if(index == -1){
+					let param = {
+						name: townData[i].flat_type,
+						data:[]
+					}
+					param.data.push({month:townData[i].month, resale_price:+townData[i].resale_price})
+					chartData.push(param)
+				}else{
+					// chartData[index].name = townData[i].flat_type
+					chartData[index].data.push({month:townData[i].month, resale_price:+townData[i].resale_price})
+				}
+			}
+		}
+		// })
+		
+	// 原始数据
+
+	var datax = [], datay = [];
+	$("#select_id").val("0");
+	if(chartData[0].data && chartData[0].data.length){
+			chartData[0].data.forEach(item => {
+				datax.push(item.month)
+				datay.push((item.resale_price))
+				console.log(moneyType(item.resale_price),'111111111111111');
+			});
+			setChart(datax,datay)
+		}
+	$("#select_id").change(function () {
+		datax = []
+		datay = []
+		var result = $(this).children('option:selected').val();
+		if(chartData[result].data&&chartData[result].data.length){
+			chartData[result].data.forEach(item => {
+				datax.push(item.month)
+				datay.push(item.resale_price)
+			});
+			// svg.remove('svg')
+			$("#test-svg").empty()
+			setChart(datax,datay)
+		}
+	});
+
+	function setChart(datax,datay){
+		var width = 1300,
+			height = 550,
+			padding = {
+				top: 40,
+				right: 40,
+				bottom: 40,
+				left: 40
+			};
+			var svg = d3.select("#test-svg")
+			.append('svg')
+			.attr('width', width + 'px')
+			.attr('height', height + 'px');
+			
+		// x轴
+		var xScale = d3.scaleOrdinal()
+			.domain(datax)
+			.range([100, 200, 300, 400, 500, 600, 700,800,900,1000,1100,1200]);
+		var xAxis = d3.axisBottom()
+			.scale(xScale);
+		svg.append('g')
+			.call(xAxis)
+			.attr("transform", "translate(0," + (height - padding.bottom) + ")")
+			.selectAll("text")
+			.attr("dx", "50px");
+			
+		// y轴      
+		var yScale = d3.scaleLinear()
+			.domain([0, d3.max(datay)])
+			.range([height - padding.bottom, padding.top]);
+		var yAxis = d3.axisLeft()
+			.scale(yScale)
+			.ticks(10);
+		svg.append('g')
+			.call(yAxis)
+			.attr("transform", "translate(" + 100 + ",0)")
+			
+		var bar = svg.selectAll(".bar")
+			.data(datay)
+			.enter().append("g")
+			.attr("class", "bar")
+			.attr("transform", function(d, i) {
+				return "translate(" + xScale(i * 100) + "," + yScale(d) + ")";
+			});
+			
+		bar.append("rect")
+			.transition() 
+			.duration(1000)
+			.attr("x", 1)
+			.attr("width", 100)
+			.attr("height", function(d) {
+				return height - yScale(d) - padding.bottom;
+			})
+			.attr("stroke", "White")
+			.attr("fill","#69b3a2")
+			
+		bar.append("text")
+			.attr("dy", ".75em")
+			.attr("y", 6)
+			.attr("x", 50)
+			.attr("text-anchor", "middle")
+			.attr("font-size", "12px")
+			.attr("fill", "White")
+			.text(function(d) {
+				return moneyType(d);
+			});
+	}
+	function moneyType(num) {
+		let arr = (num + "").split("")
+		arr.reverse()
+		for (let i = 0, len = arr.length-1; i < len; i++) {
+			if ((i + 1) % 3 === 0) {
+				arr[i] = "," + arr[i]
+			}
+		}
+		arr.reverse();
+		return arr.join("");
+	}
+}
+</script>
+</html>
